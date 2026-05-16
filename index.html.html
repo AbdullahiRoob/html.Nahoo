@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>For Nawal 🌙</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --butter: #F5DEB3;
+      --yellow: #E8C97A;
+      --brown: #8B6914;
+      --dark-brown: #3E2A0A;
+      --grey: #9E9E9E;
+      --light-grey: #F0EEEA;
+      --warm-white: #FFFDF7;
+      --gold: #C9A84C;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Lato', sans-serif;
+      background-color: var(--warm-white);
+      color: var(--dark-brown);
+      overflow-x: hidden;
+    }
+
+    /* ─── MUSIC PLAYER ─── */
+    .music-bar {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      z-index: 999;
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      background: var(--dark-brown);
+      color: var(--butter);
+      padding: 0.6rem 1.1rem;
+      border-radius: 50px;
+      font-size: 0.78rem;
+      letter-spacing: 0.06em;
+      box-shadow: 0 4px 20px rgba(62,42,10,0.3);
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    .music-bar:hover { transform: scale(1.04); }
+    .music-bar .note { font-size: 1.1rem; animation: bounce 1.2s infinite; }
+    @keyframes bounce {
+      0%,100% { transform: translateY(0); }
+      50% { transform: translateY(-4px); }
+    }
+    audio { display: none; }
+
+    /* ─── HERO ─── */
+    .hero {
+      min-height: 100vh;
+      background: linear-gradient(160deg, var(--dark-brown) 0%, #6B4C10 60%, var(--brown) 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 3rem 1.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      width: 600px; height: 600px;
+      border-radius: 50%;
+      border: 1px solid rgba(245,222,179,0.1);
+      top: -150px; left: -150px;
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      width: 400px; height: 400px;
+      border-radius: 50%;
+      border: 1px solid rgba(245,222,179,0.08);
+      bottom: -100px; right: -100px;
+    }
+
+    .hero-tag {
+      font-size: 0.72rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--yellow);
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.3s forwards;
+    }
+
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3rem, 10vw, 6.5rem);
+      color: var(--butter);
+      line-height: 1.05;
+      margin-bottom: 1.2rem;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.5s forwards;
+    }
+
+    .hero h1 em {
+      font-style: italic;
+      color: var(--yellow);
+    }
+
+    .hero-sub {
+      font-size: 1rem;
+      color: rgba(245,222,179,0.65);
+      letter-spacing: 0.04em;
+      margin-bottom: 2.5rem;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.7s forwards;
+    }
+
+    /* PHOTO FRAME */
+    .photo-frame {
+      width: 200px; height: 200px;
+      border-radius: 50%;
+      border: 4px solid var(--yellow);
+      overflow: hidden;
+      margin-bottom: 2rem;
+      box-shadow: 0 0 0 8px rgba(232,201,122,0.15), 0 20px 60px rgba(0,0,0,0.4);
+      opacity: 0;
+      animation: fadeUp 0.8s 0.1s forwards;
+    }
+    .photo-frame img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+    }
+    .photo-placeholder {
+      width: 100%; height: 100%;
+      background: rgba(245,222,179,0.1);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 3rem;
+    }
+
+    .scroll-hint {
+      position: absolute;
+      bottom: 2rem;
+      font-size: 0.72rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(245,222,179,0.4);
+      animation: fadeUp 1s 1.2s forwards, pulse 2s 2s infinite;
+      opacity: 0;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes pulse {
+      0%,100% { opacity: 0.4; }
+      50%      { opacity: 0.8; }
+    }
+
+    /* ─── SECTIONS ─── */
+    section {
+      padding: 4rem 1.5rem;
+      max-width: 860px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-size: 0.72rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--grey);
+      margin-bottom: 0.4rem;
+    }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.2rem;
+      color: var(--dark-brown);
+      margin-bottom: 0.5rem;
+    }
+    .divider {
+      width: 3rem; height: 2px;
+      background: var(--gold);
+      margin-bottom: 2.5rem;
+    }
+
+    /* ─── MOVIE SECTION ─── */
+    .movie-section { background: var(--light-grey); }
+    .movie-section > * { max-width: 860px; margin-left: auto; margin-right: auto; }
+    .movie-section section { padding: 5rem 1.5rem; }
+
+    .movie-card {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 2.5rem;
+      align-items: start;
+    }
+    .movie-poster {
+      background: linear-gradient(135deg, var(--dark-brown), var(--brown));
+      border-radius: 8px;
+      padding: 2rem 1.5rem;
+      text-align: center;
+      color: var(--butter);
+      box-shadow: 0 12px 40px rgba(62,42,10,0.2);
+    }
+    .movie-poster .film-icon { font-size: 3rem; margin-bottom: 1rem; display: block; }
+    .movie-poster h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      line-height: 1.4;
+      color: var(--yellow);
+    }
+    .movie-poster p { font-size: 0.75rem; color: rgba(245,222,179,0.55); margin-top: 0.4rem; }
+    .movie-text p { color: #5C4A2A; line-height: 1.9; font-size: 0.95rem; margin-bottom: 1rem; }
+    .movie-tags { display: flex; gap: 0.6rem; flex-wrap: wrap; margin-top: 1rem; }
+    .tag {
+      background: var(--butter);
+      color: var(--brown);
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.3rem 0.8rem;
+      border-radius: 50px;
+      border: 1px solid var(--yellow);
+    }
+
+    /* ─── JEENE LAGA HOON BLOCK ─── */
+    .film-song-block {
+      margin-top: 1.8rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid rgba(201,168,76,0.25);
+    }
+    .film-song-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--grey);
+      margin-bottom: 0.5rem;
+    }
+    .film-song-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      font-style: italic;
+      color: var(--yellow);
+      margin-bottom: 0.2rem;
+    }
+    .film-song-sub {
+      font-size: 0.78rem;
+      color: rgba(93,75,37,0.65);
+      margin-bottom: 1rem;
+    }
+    .film-song-block audio {
+      display: block;
+      width: 100%;
+      border-radius: 4px;
+      accent-color: var(--gold);
+    }
+
+    /* ─── LOVE SECTION ─── */
+    .love-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.2rem;
+    }
+
+    .love-card {
+      background: var(--warm-white);
+      border: 1px solid var(--butter);
+      border-radius: 10px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 2px 12px rgba(62,42,10,0.06);
+    }
+    .love-card:hover { transform: translateY(-4px); box-shadow: 0 8px 30px rgba(62,42,10,0.12); }
+
+    .love-front {
+      padding: 2rem 1.5rem;
+      text-align: center;
+      background: linear-gradient(135deg, var(--butter), var(--yellow));
+    }
+    .love-front .icon { font-size: 2rem; display: block; margin-bottom: 0.6rem; }
+    .love-front p {
+      font-size: 0.78rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--brown);
+      font-weight: 700;
+    }
+
+    .love-back {
+      padding: 1.2rem 1.5rem;
+      font-size: 0.9rem;
+      color: var(--dark-brown);
+      line-height: 1.7;
+      display: none;
+      background: var(--warm-white);
+      border-top: 1px solid var(--butter);
+    }
+
+    .love-card.open .love-back { display: block; animation: fadeUp 0.3s ease; }
+    .love-card .hint {
+      font-size: 0.68rem;
+      letter-spacing: 0.1em;
+      color: var(--grey);
+      text-transform: uppercase;
+      text-align: center;
+      padding-bottom: 0.8rem;
+    }
+
+    /* ─── SONG SECTION ─── */
+    .song-section {
+      background: var(--dark-brown);
+      padding: 5rem 1.5rem;
+      text-align: center;
+    }
+    .song-section .section-label { color: rgba(245,222,179,0.45); }
+    .song-section .section-title { color: var(--butter); text-align: center; }
+    .song-section .divider { margin: 0.5rem auto 2.5rem; }
+    .song-card {
+      max-width: 520px;
+      margin: 0 auto;
+      background: rgba(245,222,179,0.06);
+      border: 1px solid rgba(232,201,122,0.2);
+      border-radius: 12px;
+      padding: 2.5rem 2rem;
+    }
+    .song-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      color: var(--yellow);
+      font-style: italic;
+      margin-bottom: 0.4rem;
+    }
+    .song-artist {
+      font-size: 0.8rem;
+      color: rgba(245,222,179,0.5);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+    }
+    .song-line {
+      font-size: 1rem;
+      color: rgba(245,222,179,0.8);
+      font-style: italic;
+      line-height: 1.9;
+      border-left: 2px solid var(--gold);
+      padding-left: 1.2rem;
+      text-align: left;
+    }
+    .song-note {
+      margin-top: 1.5rem;
+      font-size: 0.82rem;
+      color: rgba(245,222,179,0.45);
+      line-height: 1.7;
+    }
+
+    /* ─── CLOSING ─── */
+    .closing {
+      text-align: center;
+      padding: 6rem 1.5rem;
+      background: linear-gradient(160deg, var(--butter) 0%, var(--warm-white) 100%);
+    }
+    .closing h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 6vw, 3.5rem);
+      color: var(--dark-brown);
+      margin-bottom: 1rem;
+    }
+    .closing h2 em { color: var(--brown); font-style: italic; }
+    .closing p {
+      font-size: 0.95rem;
+      color: #7A5C28;
+      line-height: 1.9;
+      max-width: 480px;
+      margin: 0 auto 2rem;
+    }
+    .closing-sig {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      font-style: italic;
+      color: var(--brown);
+    }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: var(--dark-brown);
+      padding: 1.5rem;
+      text-align: center;
+      font-size: 0.75rem;
+      color: rgba(245,222,179,0.35);
+      letter-spacing: 0.08em;
+    }
+
+    /* ─── MOBILE ─── */
+    @media(max-width: 600px) {
+      .movie-card { grid-template-columns: 1fr; }
+      .movie-poster { padding: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- MUSIC BAR — favourite-girl.mp3 goes in the same folder -->
+<div class="music-bar" onclick="toggleMusic()" id="musicBar">
+  <span class="note">♪</span>
+  <span id="musicLabel">Play A Song about Nawal</span>
+</div>
+<audio id="bgMusic" loop>
+  <source src="favourite-girl.mp3.mpeg" type="audio/mpeg" />
+</audio>
+
+<!-- ═══════════ HERO ═══════════ -->
+<div class="hero">
+  <!-- Replace us.jpg with your photo file -->
+  <div class="photo-frame">
+    <img src="us.jpg (2).jpeg" alt="Us" onerror="this.parentElement.innerHTML='<div class=\'photo-placeholder\'>🌙</div>'" />
+  </div>
+  <div class="hero-tag">A page made just for you</div>
+  <h1>Hello,<br /><em>Nawal.</em></h1>
+  <p class="hero-sub">Nawal Mohamed Omar &mdash; this one's yours.</p>
+  <span class="scroll-hint">↓ Scroll to explore</span>
+</div>
+
+<!-- ═══════════ FAVOURITE MOVIE ═══════════ -->
+<div class="movie-section">
+  <section>
+    <div class="section-label">Your Favourite Film</div>
+    <div class="section-title">Ramaiya Vastavaiya</div>
+    <div class="divider"></div>
+    <div class="movie-card">
+      <div class="movie-poster">
+        <span class="film-icon">🎬</span>
+        <h3> Ramaiya Vastavaiya</h3>
+        <p>2013 · Bollywood Romance</p>
+      </div>
+      <div class="movie-text">
+        <p>
+           In Ramaiya Vastavaiya, Ram starts off not really understanding what love truly means. To him, it’s easy, exciting… almost effortless. But when he meets Sona, everything changes. Love stops being just a feeling; and becomes something he has to prove, fight for, and grow into.
+
+And that’s what reminds me of us.
+
+Not because our story is the same… but because of what it stands for.
+        </p>
+        <p>
+         Like Ram, I’ve had to learn that love isn’t just about the good moments, the laughter, or the easy days. It’s about staying, even when things aren’t simple. It’s about choosing one person, over and over again, even when life tests you.
+
+And like Sona, you’ve always had this quiet strength;this way of standing firm in who you are, in what you believe, and in what you deserve. You’ve never been just part of my life… you’ve been the reason I’ve wanted to become better.
+
+In the movie, Ram goes through challenges to prove he’s worthy of her love. Not because he’s forced to;but because he realizes she’s worth everything.
+
+And honestly… I understand that now more than ever.<br>
+What we’ve had over these 6 years hasn’t been perfect. But it’s been real. And real love;the kind that stays, the kind that grows, the kind that refuses to fade...is rare.
+
+If our story were a film, it wouldn’t just be about falling in love…
+
+It would be about never letting go of it.
+        </p>
+        <p>
+          HAPPY MAY 17TH BABYGIRL!<br>
+          You are MY SOMETHING SOMETHING NAWAL. 🌼
+        </p>
+        
+
+        <!-- ══ JEENE LAGA HOON ══ -->
+        <div class="film-song-block">
+          <p class="film-song-label">Her Favourite Song from the Film</p>
+          <p class="film-song-title">Jeene Laga Hoon</p>
+          <p class="film-song-sub">Ramaiya Vastavaiya OST</p>
+          <!-- Name your downloaded file jeene-laga-hoon.mp3 and put it in the same folder -->
+          <audio controls>
+            <source src="jeene-laga-hoon.mp3.mpeg" type="audio/mpeg" />
+            Your browser does not support the audio element.
+          </audio>
+        </div>
+
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ═══════════ THINGS I LOVE ABOUT NAWAL═══════════ -->
+<section>
+  <div class="section-label">Click each one to reveal</div>
+  <div class="section-title">Things I Love About You</div>
+  <div class="divider"></div>
+  <div class="love-grid">
+
+    <div class="love-card" onclick="toggleCard(this)">
+      <div class="love-front">
+        <span class="icon">😄</span>
+        <p>Your Smile</p>
+      </div>
+      <div class="love-back">
+        I love your smile...not just because it's beautiful but because it lights my world up(it's honestly suspicious at this point...like how are you doing that?)
+      </div>
+      <div class="hint">tap to reveal ↓</div>
+    </div>
+
+    <div class="love-card" onclick="toggleCard(this)">
+      <div class="love-front">
+        <span class="icon">💛</span>
+        <p>Your Heart</p>
+      </div>
+      <div class="love-back">
+        You care deeply — about people, about small things, about doing right. There's a warmth in you that's rare and real. And i notice it more than i say.
+      </div>
+      <div class="hint">tap to reveal ↓</div>
+    </div>
+
+    <div class="love-card" onclick="toggleCard(this)">
+      <div class="love-front">
+        <span class="icon">✨</span>
+        <p>How You Carry Yourself</p>
+      </div>
+      <div class="love-back">
+        Graceful. Quiet confidence. The kind of presence that makes people pay attention without you even trying. And somehow that says everything about you.
+      </div>
+      <div class="hint">tap to reveal ↓</div>
+    </div>
+
+    <div class="love-card" onclick="toggleCard(this)">
+      <div class="love-front">
+        <span class="icon">🎬</span>
+        <p>Your Taste</p>
+      </div>
+      <div class="love-back">
+        Whether it's music, movies, or little things(i remember your favourite colours btw...butter-yellow, Brown and grey...which is the colours i used for the background of this website...you must be thinking damnn he is awesome(hahahahaha,aight i'm done.)) — your taste is warm, intentional, and uniquely you. Everything you love says something beautiful about who you are.
+      </div>
+      <div class="hint">tap to reveal ↓</div>
+    </div>
+
+    <div class="love-card" onclick="toggleCard(this)">
+      <div class="love-front">
+        <span class="icon">🌙</span>
+        <p>Your Name</p>
+      </div>
+      <div class="love-back">
+        Nawal. It means "gift" in Arabic. I fuck with your name indey. Sorry i curse alot...You are my Gift though, in this lifetime.
+      </div>
+      <div class="hint">tap to reveal ↓</div>
+    </div>
+
+    <div class="love-card" onclick="toggleCard(this)">
+      <div class="love-front">
+        <span class="icon">🤝</span>
+        <p>The Way You Make Me Feel</p>
+      </div>
+      <div class="love-back">
+        I love how you make me feel Nawal. The best version of me is the one that is madly in love with you. You make me happy.
+      </div>
+      <div class="hint">tap to reveal ↓</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════ THE SONG ═══════════ -->
+<div class="song-section">
+  <div class="section-label">The Song That Made Me Think Of You</div>
+  <div class="section-title">Favourite Girl</div>
+  <div class="divider"></div>
+  <div class="song-card">
+    <div class="song-title">Favourite Girl</div>
+    <div class="song-line">
+      "You are who i'm thinking off... And girl you aint my Runner-up... And no matter what you're always number 1"
+    </div>
+    <p class="song-note">
+The first time I heard this, I wasn't thinking about the song.
+I was thinking about you. I still am. <br>
+    </p>
+  </div>
+</div>
+
+<!-- ═══════════ CLOSING ═══════════ -->
+<div class="closing">
+  <h2>You are<br /><em>something else, Nawal.</em></h2>
+  <p>
+    This little page doesn't come close to saying everything i feel about you.<br>
+    You are my longest story.<br>
+My most meaningful lesson.<br>
+And the one person who made love feel deeper than I ever understood before.<br>
+
+Was thinking of you and i was like lemme program a website that shows her how much she means to me. I miss YOU!!!!
+  </p>
+  <div class="closing-sig">— Yours Abdullahi Roob🌼</div>
+</div>
+
+<!-- ═══════════ FOOTER ═══════════ -->
+<footer>
+  Made with love for Nawal Mohamed Omar &nbsp;&middot;&nbsp; &copy; 2026
+</footer>
+
+<script>
+  function toggleCard(card) {
+    card.classList.toggle('open');
+  }
+  function toggleMusic() {
+    const audio = document.getElementById('bgMusic');
+    const label = document.getElementById('musicLabel');
+    if (audio.paused) {
+      audio.play();
+      label.textContent = 'Playing ♪';
+    } else {
+      audio.pause();
+      label.textContent = 'Play a Song about nawal';
+    }
+  }
+</script>
+
+</body>
+</html>
